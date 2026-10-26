@@ -1,0 +1,57 @@
+body { margin: 0; font-family: var(--font-serif); background: var(--paper); color: var(--ink); }
+.wic-row { display: flex; flex-wrap: wrap; gap: var(--space-3) var(--space-6); align-items: center; padding: var(--space-6) var(--space-4); }
+.wic-stack { display: grid; gap: var(--space-12); padding: var(--space-8) var(--space-4); }
+.wic-focus:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; }
+.wic-aside { font-family: var(--font-serif); font-style: italic; font-size: 17px; line-height: 24px; color: var(--ink-muted); }
+
+/* Button: a sheet cut with scissors */
+.wic-btn { font-family: var(--font-gothic); font-weight: 700; font-size: 17px; line-height: 22px; height: 46px; padding: 0 var(--space-6); border: 0; background: var(--ink); color: var(--paper); cursor: pointer;
+  clip-path: polygon(1% 6%, 52% 0, 99% 4%, 100% 92%, 47% 100%, 0 96%); transition: transform .12s; }
+.wic-btn:hover { transform: translateY(-2px); }
+.wic-btn-primary { background: var(--red); color: var(--on-red); }
+.wic-btn-quiet { background: transparent; color: var(--ink); clip-path: none; padding: 0 var(--space-2); position: relative; }
+.wic-btn-quiet::after { content: ""; position: absolute; left: 0; right: 0; bottom: 2px; height: 6px; background: var(--ochre); z-index: -1; clip-path: polygon(0 30%, 60% 0, 100% 40%, 98% 100%, 30% 80%, 2% 100%); }
+.wic-btn-quiet { isolation: isolate; }
+.wic-btn:disabled { background: transparent; color: var(--ink-muted); cursor: not-allowed; transform: none; text-decoration: line-through; }
+.wic-btn:disabled::after { display: none; }
+
+/* Badge: a scrap of paper, pasted crooked */
+.wic-badge { display: inline-flex; align-items: center; gap: var(--space-1); font-family: var(--font-gothic); font-weight: 700; font-size: 15px; line-height: 20px; padding: 3px var(--space-2) 2px; background: var(--paper-raised); color: var(--ink);
+  clip-path: polygon(0 8%, 100% 0, 97% 100%, 3% 92%); transform: rotate(var(--tilt-1)); }
+.wic-badge-admitted { background: var(--ink); color: var(--paper); }
+.wic-badge-refused { background: var(--red-soft); color: var(--red-ink); }
+.wic-badge-pending { background: var(--ochre); color: var(--on-ochre); }
+.wic-badge-license { font-family: var(--font-typewriter); font-weight: 400; font-size: 15px; background: transparent; clip-path: none; transform: none; padding: 0; border-bottom: 1px solid var(--line-strong); }
+
+/* Slogan: words that swing around a silence, with cut bars */
+.wic-slogan { position: relative; padding: var(--space-6) 0 var(--space-8) var(--space-4); min-height: 120px; }
+.wic-slogan-kicker { display: block; font-family: var(--font-serif); font-style: italic; font-size: 18px; line-height: 24px; color: var(--ink-muted); margin: 0 0 var(--space-3) var(--space-12); }
+.wic-slogan-text { position: relative; z-index: 1; margin: 0; font-family: var(--font-display); font-weight: 400; color: var(--red); line-height: .9; display: flex; flex-wrap: wrap; align-items: baseline; column-gap: 18px; max-width: 640px; font-size: 64px; }
+.wic-slogan-ink .wic-slogan-text { color: var(--ink); }
+.wic-w { display: inline-block; font-size: 64px; }
+.wic-w:nth-child(3n) { font-size: 80px; }
+.wic-w:nth-child(4n) { color: var(--ink); }
+.wic-slogan-ink .wic-w:nth-child(4n) { color: var(--red); }
+.wic-bar { position: absolute; display: block; clip-path: polygon(0 18%, 100% 0, 99% 82%, 1% 100%); }
+.wic-bar-1 { left: 0; top: 10px; width: 36px; height: 12px; background: var(--ochre); transform: rotate(var(--tilt-3)); }
+.wic-bar-2 { right: 8%; top: 18px; width: 120px; height: 14px; background: var(--ink); transform: rotate(6deg); }
+.wic-bar-3 { right: 18%; bottom: 6px; width: 64px; height: 26px; background: var(--ochre); transform: rotate(var(--tilt-3)); }
+.wic-bar-4 { left: 30%; bottom: 0; width: 200px; height: 9px; background: var(--ink); transform: rotate(-1deg); }
+
+/* Notice: liner notes on the back of the sleeve */
+.wic-notice { position: relative; background: var(--paper-raised); padding: var(--space-6) var(--space-6) var(--space-4); max-width: 560px;
+  clip-path: polygon(0 1%, 100% 0, 99.5% 99%, 0.5% 100%); }
+.wic-notice-label { display: inline-block; font-family: var(--font-gothic); font-weight: 700; font-size: 15px; line-height: 22px; background: var(--ochre); color: var(--on-ochre); padding: 1px var(--space-3); margin: 0 0 var(--space-3) calc(-1 * var(--space-6)); clip-path: polygon(0 0, 100% 10%, 97% 100%, 0 90%); }
+.wic-notice-body { margin: 0; font-family: var(--font-serif); font-size: 18px; line-height: 30px; }
+
+/* SourceCard: one sheet of the provenance ledger */
+.wic-source { position: relative; background: var(--paper-raised); max-width: 560px; padding-top: 10px; transition: transform .12s, box-shadow .12s; }
+.wic-source::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 8px; background: var(--ink); clip-path: polygon(0 0, 100% 30%, 100% 100%, 0 70%); }
+.wic-source:hover { transform: translateY(-2px); box-shadow: var(--shadow-misprint); }
+.wic-source-head { display: flex; justify-content: space-between; align-items: center; gap: var(--space-3); padding: var(--space-4) var(--space-4) var(--space-2); }
+.wic-source-name { margin: 0; font-family: var(--font-gothic); font-weight: 800; font-size: 24px; line-height: 30px; }
+.wic-source dl { margin: 0; padding: 0 var(--space-4) var(--space-4); display: grid; grid-template-columns: max-content 1fr; }
+.wic-source dt, .wic-source dd { margin: 0; padding: var(--space-2) 0; border-bottom: 1px solid var(--line); }
+.wic-source dt { font-family: var(--font-serif); font-style: italic; font-size: 16px; line-height: 23px; color: var(--ink-muted); padding-right: var(--space-6); }
+.wic-source dd { font-family: var(--font-typewriter); font-size: 15px; line-height: 23px; overflow-wrap: anywhere; }
+@media (prefers-reduced-motion: reduce) { .wic-btn, .wic-source { transition: none; } .wic-btn:hover, .wic-source:hover { transform: none; } }

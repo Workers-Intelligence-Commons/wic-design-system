@@ -1,0 +1,14 @@
+{
+  "name": "@workers-intelligence-commons/tokens",
+  "version": "0.0.0",
+  "description": "Colours, spacing, type, fonts and logos of Workers' Intelligence Commons.",
+  "license": "AGPL-3.0-or-later AND OFL-1.1 AND LicenseRef-WIC-Logos",
+  "repository": { "type": "git", "url": "git+https://github.com/Workers-Intelligence-Commons/wic-design-system.git", "directory": "packages/tokens" },
+  "files": ["tokens.css", "tokens.json", "fonts", "logos"],
+  "exports": {
+    "./tokens.css": "./tokens.css",
+    "./tokens.json": "./tokens.json",
+    "./fonts/*": "./fonts/*",
+    "./logos/*": "./logos/*"
+  }
+}

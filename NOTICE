@@ -1,0 +1,14 @@
+Workers' Intelligence Commons design system notice
+
+This repository holds the brand book, tokens, fonts, logos and components
+of Workers' Intelligence Commons.
+
+
+Licenses
+
+- Brand book, tokens, components and examples: AGPL-3.0-or-later, see
+  LICENSE.
+- Fonts in packages/tokens/fonts: OFL-1.1, each with its license file
+  alongside.
+- WPT and WIC monograms in packages/tokens/logos and assets/icon.svg: not
+  licensed, all rights reserved.

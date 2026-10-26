@@ -1,0 +1,7 @@
+{
+  "name": "wic-design-system",
+  "private": true,
+  "license": "AGPL-3.0-or-later",
+  "packageManager": "bun@1.4.4",
+  "workspaces": ["packages/*"]
+}

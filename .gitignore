@@ -1,1 +1,3 @@
 node_modules/
+dist/
+packages/components/src/marks.generated.ts

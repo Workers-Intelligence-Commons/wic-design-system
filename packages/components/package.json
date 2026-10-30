@@ -1,15 +1,41 @@
 {
   "name": "@workers-intelligence-commons/components",
   "version": "0.0.0",
-  "description": "React 18 components of Workers' Intelligence Commons, exposed as window.WIC.",
-  "license": "AGPL-3.0-or-later",
-  "repository": { "type": "git", "url": "git+https://github.com/Workers-Intelligence-Commons/wic-design-system.git", "directory": "packages/components" },
-  "files": ["bundle.js", "bundle.css", "index.d.ts", "*.md"],
-  "types": "./index.d.ts",
-  "exports": {
-    "./bundle.js": "./bundle.js",
-    "./bundle.css": "./bundle.css"
+  "description": "React 19 components of Workers' Intelligence Commons.",
+  "license": "AGPL-3.0-or-later AND LicenseRef-WIC-Logos",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Workers-Intelligence-Commons/wic-design-system.git",
+    "directory": "packages/components"
   },
-  "dependencies": { "@workers-intelligence-commons/tokens": "workspace:*" },
-  "peerDependencies": { "react": "^18" }
+  "type": "module",
+  "files": ["dist", "*.md"],
+  "sideEffects": ["*.css"],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./styles.css": "./dist/styles.css",
+    "./global.js": "./dist/wic.global.js"
+  },
+  "scripts": {
+    "build": "bun scripts/build.ts",
+    "test": "bun scripts/marks.ts && bun test",
+    "typecheck": "bun scripts/marks.ts && tsc -p tsconfig.json"
+  },
+  "dependencies": {
+    "@workers-intelligence-commons/tokens": "workspace:*"
+  },
+  "peerDependencies": {
+    "react": "^19"
+  },
+  "devDependencies": {
+    "@types/bun": "^1.4.4",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "react": "^19",
+    "react-dom": "^19",
+    "typescript": "^7.0.2"
+  }
 }

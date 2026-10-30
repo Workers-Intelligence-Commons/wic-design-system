@@ -40,7 +40,7 @@ Workers' Intelligence Commons holds intelligence as a means of production, in co
 ## Focus and states
 
 - Keyboard focus: a solid 3px `ink` outline, 3px off the element, over 3:1 on every surface in both themes.
-- Hover: buttons and source cards lift by 2px, cards with `shadow-misprint`. Disabled: `ink-muted`, struck through. Motion is skipped under `prefers-reduced-motion`.
+- Hover: buttons and source cards lift by 2px and cast `shadow-misprint`. A quiet button only lifts: it has no sheet, and a shadow on bare letters would hurt reading. Disabled: `ink-muted`, struck through. Motion is skipped under `prefers-reduced-motion`.
 
 ## Logos
 
@@ -50,12 +50,27 @@ The two monograms share one construction, cut from paper: the W of the workers, 
 - `wic-mark.svg`: Workers' Intelligence Commons. The W rises into the I, then the C.
 - `-reverse` files are for dark grounds (paper W, light red); `-red` files are single-ink, for one-colour printing.
 - Keep clear space of half the mark's height; minimum 24px tall; never redraw or straighten the pieces.
+- On screen, the `Mark` component draws both monograms from these files in the inks of the current theme.
 
 ## Iconography
 
 - No icon set. Status uses the glyphs `■ ✕ ○`. If icons are ever needed, cut them like the marks: solid paper silhouettes (a hand, a factory roof, a disc), one ink, no outlines.
 - The references are workers, their work and their music, not a party: prefer the hand, the factory and the cut bar over the hammer and sickle.
 
-## Components
+## Packages
 
-`window.WIC` (React 18), in `packages/components`: `Button`, `Badge`, `Slogan`, `Notice`, `SourceCard`. Load `packages/tokens/tokens.css`, then `packages/components/bundle.css`, then React, then `packages/components/bundle.js`.
+The repository is a Bun workspace. `bun install` at the root installs it, `bun run build` builds every package into its `dist/`, and `bun run test` checks the components.
+
+- `packages/tokens` (`@workers-intelligence-commons/tokens`): the tokens and the brand files.
+  - `tokens.json` holds every token: colours in both themes, spacing, radius, tilt, shadow, fonts and text styles, each with its usage.
+  - `tokens.css` is built from `tokens.json`. It sets every token as a CSS variable, loads the fonts, switches to the dark theme with the system setting or `data-theme="dark"` on the root element, and gives one class per text style.
+  - `fonts/` holds the four families, each with its OFL-1.1 license.
+  - `logos/` holds the WPT and WIC monograms: normal, reverse for dark grounds, and single red.
+- `packages/components` (`@workers-intelligence-commons/components`): React 19 components. `Button`, `ButtonLink`, `Badge`, `Slogan`, `Notice`, `SourceCard`, `Sheet`, `SectionHeading` and `Mark`, each with a guideline file beside its package manifest.
+  - The package exports the components as ES modules with their types, and `styles.css` for their styles.
+  - `global.js` is the same components for a page without a bundler: it reads React from `window.React` and sets `window.WIC`.
+  - The `Mark` drawings are generated from `packages/tokens/logos` at build time.
+- `examples/support`: the support page of WPT, built from both packages. `bun run dev` in its folder serves it; `bun run build` writes it to `dist/`.
+- `NOTICE`: the license of each part.
+
+A page loads `tokens.css` before the components' `styles.css`.

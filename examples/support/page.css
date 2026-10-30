@@ -1,0 +1,37 @@
+/* layout of the support page: one column of liner notes; the slogan swings around a wide silence; three sheets for the three ways to give */
+*, *::before, *::after { box-sizing: border-box; }
+body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--font-serif); font-size: 18px; line-height: 30px; overflow-x: hidden; }
+.wrap { max-width: 760px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: var(--space-8) var(--space-12); }
+a:not(.wic-btn) { color: var(--ink); text-decoration-color: var(--red); text-decoration-thickness: 2px; text-underline-offset: 3px; }
+a:not(.wic-btn):focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; }
+.aside { font-style: italic; font-size: 17px; line-height: 24px; color: var(--ink-muted); }
+header { display: flex; align-items: center; gap: var(--space-3); margin-bottom: var(--space-6); }
+.lead { font-size: 21px; line-height: 32px; max-width: 34em; margin: 0 0 var(--space-8); }
+section { margin-top: var(--space-12); }
+p { margin: 0 0 var(--space-3); max-width: 36em; }
+code { font-family: var(--font-typewriter); font-size: 15px; }
+/* in this order: a real sequence */
+.order { list-style: none; padding: 0; margin: 0; display: grid; gap: var(--space-4); }
+.order li { display: grid; grid-template-columns: 64px 1fr; align-items: baseline; gap: var(--space-3); }
+.order .n { font-family: var(--font-display); font-size: 64px; line-height: .8; color: var(--red); }
+.order li:nth-child(2) .n { color: var(--ink); }
+.order li > span:last-child { min-width: 0; }
+.after { margin-top: var(--space-6); font-size: 21px; line-height: 32px; }
+/* three sheets */
+.ways { display: grid; gap: var(--space-6); }
+.ways ul { margin: 0 0 var(--space-4); padding-left: 1.1em; }
+.ways li { margin-bottom: var(--space-2); }
+.ph { font-family: var(--font-typewriter); font-size: 16px; background: var(--red-soft); color: var(--red-ink); padding: 1px 6px; white-space: normal; overflow-wrap: anywhere; }
+.ph::before { content: "to fill in: "; font-family: var(--font-serif); font-style: italic; }
+.actions { display: flex; flex-wrap: wrap; gap: var(--space-3) var(--space-6); align-items: center; }
+/* two things, kept apart */
+.apart { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-6); }
+.apart > div { min-width: 0; border-top: 2px solid var(--ink); padding-top: var(--space-3); }
+.apart > div:last-child { border-top-color: var(--red); }
+.apart h3 { margin: 0 0 var(--space-2); font-family: var(--font-gothic); font-weight: 800; font-size: 24px; line-height: 30px; }
+.apart p { margin-top: var(--space-3); }
+.tag { display: inline-block; font-family: var(--font-gothic); font-weight: 700; font-size: 15px; line-height: 20px; padding: 3px var(--space-2) 2px; clip-path: polygon(0 8%, 100% 0, 97% 100%, 3% 92%); transform: rotate(var(--tilt-1)); }
+.tag-ink { background: var(--ink); color: var(--paper); }
+.tag-ochre { background: var(--ochre); color: var(--on-ochre); }
+footer { margin-top: var(--space-12); padding-top: var(--space-6); border-top: 1px solid var(--line); display: flex; flex-wrap: wrap; gap: var(--space-4); align-items: center; justify-content: space-between; }
+@media (max-width: 560px) { .apart { grid-template-columns: 1fr; } }

@@ -3,5 +3,9 @@
   "private": true,
   "license": "AGPL-3.0-or-later",
   "packageManager": "bun@1.4.4",
-  "workspaces": ["packages/*"]
+  "workspaces": ["packages/*", "examples/*"],
+  "scripts": {
+    "build": "bun run --filter @workers-intelligence-commons/tokens build && bun run --filter @workers-intelligence-commons/components build",
+    "test": "bun run --filter @workers-intelligence-commons/components test"
+  }
 }

@@ -1,0 +1,15 @@
+{
+  "name": "@workers-intelligence-commons/example-support",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "bun index.html",
+    "build": "bun build index.html --outdir dist --production"
+  },
+  "dependencies": {
+    "@workers-intelligence-commons/components": "workspace:*",
+    "@workers-intelligence-commons/tokens": "workspace:*",
+    "react": "^19",
+    "react-dom": "^19"
+  }
+}

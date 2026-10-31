@@ -1,0 +1,3 @@
+# Composer
+
+The box where a person writes the next message: Enter sends, Shift+Enter adds a line, and the italic hint under the box says so. The consumer provides `onSend`, which receives the trimmed text and may return a promise; the box clears once it resolves and keeps the text if it rejects. Optionally: `running` with `onStop` adds a Stop button while a reply is being written, `onCancel` adds a Cancel button (for editing a sent message, with its text in `defaultValue`), and `label`, `placeholder` and `sendLabel` replace "Message", nothing and "Send". The red Send button is the view's one primary action.

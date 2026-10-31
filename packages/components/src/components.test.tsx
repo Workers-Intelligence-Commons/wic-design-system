@@ -1,6 +1,6 @@
 import { describe, expect, test } from "bun:test";
 import { renderToStaticMarkup } from "react-dom/server";
-import { Badge, ButtonLink, Mark, Notice, SectionHeading, Slogan, SourceCard } from "./index.ts";
+import { Badge, BranchSwitcher, ButtonLink, Checkbox, ConversationItem, Mark, Message, Notice, Question, SectionHeading, Slogan, SourceCard, Status, TextInput, ToolCall } from "./index.ts";
 
 const html = (node: React.ReactNode) => renderToStaticMarkup(node);
 
@@ -72,5 +72,74 @@ describe("Mark", () => {
   test("draws in the theme inks, the W in red for the single-ink tone", () => {
     expect(html(<Mark name="wpt" />)).toMatch(/<g fill="var\(--ink\)">.*<g fill="var\(--red\)">/);
     expect(html(<Mark name="wpt" tone="red" />)).not.toContain("var(--ink)");
+  });
+});
+
+describe("TextInput and Checkbox", () => {
+  test("tie the label, the hint and the error to the control", () => {
+    const out = html(<TextInput id="key" label="API key" hint="Shown once." error="This key opens no account." />);
+    expect(out).toContain('<label for="key" class="wic-label">API key</label>');
+    expect(out).toContain('id="key" aria-describedby="key-hint key-error" aria-invalid="true"');
+    expect(out).toContain('<p id="key-error" class="wic-field-error" role="alert"><span aria-hidden="true">✕</span>This key opens no account.</p>');
+  });
+
+  test("leave the control undescribed and valid without hint or error", () => {
+    const out = html(<Checkbox id="keep" label="Keep me signed in" />);
+    expect(out).toContain('<input type="checkbox" id="keep" class="wic-check-box wic-focus"/>');
+    expect(out).toContain('<label for="keep" class="wic-check-label">Keep me signed in</label>');
+  });
+});
+
+describe("Message", () => {
+  test("says how a reply ended with a glyph and a word", () => {
+    expect(html(<Message from="assistant" end="interrupted">Half</Message>)).toContain('<span aria-hidden="true">○</span>interrupted');
+    expect(html(<Message from="assistant" end="failed">-</Message>)).toContain('<span aria-hidden="true">✕</span>failed');
+  });
+
+  test("is busy while it streams", () => {
+    const out = html(<Message from="assistant" streaming>Wri</Message>);
+    expect(out).toContain('aria-busy="true"');
+    expect(out).toContain("wic-message-cursor");
+    expect(html(<Message from="user">Hello</Message>)).not.toContain("aria-busy");
+  });
+});
+
+describe("ConversationItem", () => {
+  test("renders through the link the application provides, marked when current", () => {
+    const out = html(<ConversationItem title="Strike fund" current running link={(props) => <a data-router="" href="/c/1" {...props} />} />);
+    expect(out).toContain('<a data-router="" href="/c/1" class="wic-conversation-link wic-focus" aria-current="page">');
+    expect(out).toContain('<span aria-hidden="true">○</span>running');
+  });
+
+  test("falls back to a plain link to its href", () => {
+    expect(html(<ConversationItem title="Minutes" href="/c/2" />)).toContain('<a href="/c/2" class="wic-conversation-link wic-focus">');
+  });
+});
+
+describe("BranchSwitcher", () => {
+  test("is absent while there is a single version", () => {
+    expect(html(<BranchSwitcher index={0} count={1} onPick={() => {}} />)).toBe("");
+  });
+
+  test("counts from one and disables the step past either end", () => {
+    const out = html(<BranchSwitcher index={0} count={3} onPick={() => {}} />);
+    expect(out).toContain(">1 / 3</span>");
+    expect(out).toMatch(/aria-label="Previous version" disabled=""/);
+    expect(out).not.toMatch(/aria-label="Next version" disabled=""/);
+  });
+});
+
+describe("ToolCall and Status", () => {
+  test("pair each state with its glyph and word", () => {
+    expect(html(<ToolCall name="read_file" state="awaiting_approval" />)).toContain('<span aria-hidden="true">○</span>awaiting approval');
+    expect(html(<ToolCall name="read_file" state="error" />)).toContain('<span aria-hidden="true">✕</span>error');
+    expect(html(<Status kind="offline">server offline</Status>)).toContain('<span aria-hidden="true">✕</span>server offline');
+  });
+});
+
+describe("Question", () => {
+  test("is a form only when it collects an answer", () => {
+    expect(html(<Question question="Allow this tool?" />)).toMatch(/^<section class="wic-question">/);
+    expect(html(<Question question="Your name?" onSubmit={() => {}} />)).toMatch(/^<form class="wic-question">/);
   });
 });

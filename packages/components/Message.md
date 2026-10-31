@@ -1,0 +1,3 @@
+# Message and MessageList
+
+A conversation between a person and a model. `Message` sets the person's words on a raised scrap pasted to the right and the model's reply printed on the page behind a rule of ink, each under its lowercase italic label. The consumer provides `from` (`user` or `assistant`), `children` (the paragraphs), and optionally `label` (defaults to "you" or "assistant"), `streaming` (a red cursor at the end, and the message marked busy), `end` (`interrupted` or `failed`, said with its glyph and word) and `actions` (quiet buttons and a BranchSwitcher under the text). `MessageList` holds the messages as a log that stays pinned to its end while a reply streams, unless the reader has scrolled up; give it the height it scrolls in.

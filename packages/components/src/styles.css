@@ -69,8 +69,97 @@ h3.wic-heading { font-size: 24px; line-height: 30px; letter-spacing: 0; }
 /* Mark: the monograms, in the inks of the current theme */
 .wic-mark { display: block; width: auto; }
 
+/* Fields: a label in the gothic cue over a box ruled in line-strong, the only shape that takes radius-1 */
+.wic-field { display: grid; gap: var(--space-1); margin: 0 0 var(--space-4); }
+.wic-label { font-family: var(--font-gothic); font-weight: 700; font-size: 17px; line-height: 22px; }
+.wic-input { width: 100%; min-height: 46px; padding: var(--space-2) var(--space-3); font-family: var(--font-serif); font-size: 18px; line-height: 28px; color: var(--ink); background: var(--paper-raised); border: 1px solid var(--line-strong); border-radius: var(--radius-1); box-sizing: border-box; }
+.wic-input::placeholder { color: var(--ink-muted); font-style: italic; }
+.wic-input[aria-invalid="true"] { border-color: var(--red-ink); border-width: 2px; }
+.wic-input:disabled { color: var(--ink-muted); cursor: not-allowed; }
+.wic-textarea { resize: vertical; }
+.wic-select { appearance: none; padding-right: var(--space-8); background-image: linear-gradient(45deg, transparent 50%, var(--ink) 50%), linear-gradient(-45deg, transparent 50%, var(--ink) 50%); background-position: calc(100% - 18px) 50%, calc(100% - 12px) 50%; background-size: 6px 6px; background-repeat: no-repeat; }
+.wic-field-hint { margin: 0; font-family: var(--font-serif); font-style: italic; font-size: 17px; line-height: 24px; color: var(--ink-muted); }
+.wic-field-error { display: flex; gap: var(--space-1); margin: 0; font-family: var(--font-gothic); font-weight: 700; font-size: 15px; line-height: 20px; color: var(--red-ink); }
+.wic-check { grid-template-columns: max-content 1fr; column-gap: var(--space-2); align-items: start; }
+.wic-check .wic-field-hint, .wic-check .wic-field-error { grid-column: 2; }
+.wic-check-box { width: 20px; height: 20px; margin: 1px 0 0; accent-color: var(--ink); }
+.wic-check-label { font-family: var(--font-serif); font-size: 18px; line-height: 22px; }
+
+/* Status: a word and its glyph, like Badge, for the state of a conversation rather than a source */
+.wic-status { display: inline-flex; align-items: center; gap: var(--space-1); font-family: var(--font-gothic); font-weight: 700; font-size: 15px; line-height: 20px; padding: 2px var(--space-2) 1px; clip-path: polygon(0 8%, 100% 0, 97% 100%, 3% 92%); white-space: nowrap; }
+.wic-status-running, .wic-status-waiting { background: var(--ochre); color: var(--on-ochre); }
+.wic-status-offline { background: var(--red-soft); color: var(--red-ink); }
+.wic-status-done { background: var(--ink); color: var(--paper); }
+.wic-status-running > span[aria-hidden] { animation: wic-turn 1.6s steps(4) infinite; display: inline-block; }
+@keyframes wic-turn { to { transform: rotate(360deg); } }
+
+/* MessageList and Message: the reader's words pasted on a raised scrap, the replies printed on the page */
+.wic-messages { display: flex; flex-direction: column; gap: var(--space-6); overflow-y: auto; padding: var(--space-6) var(--space-4); }
+.wic-messages:focus-visible { outline: 3px solid var(--ink); outline-offset: -3px; }
+.wic-message { position: relative; max-width: 72ch; }
+.wic-message-label { display: block; margin-bottom: var(--space-1); font-family: var(--font-serif); font-style: italic; font-size: 17px; line-height: 24px; color: var(--ink-muted); }
+.wic-message-body { font-family: var(--font-serif); font-size: 18px; line-height: 30px; overflow-wrap: anywhere; }
+.wic-message-body > :first-child { margin-top: 0; }
+.wic-message-body > :last-child { margin-bottom: 0; }
+.wic-message-user { align-self: flex-end; background: var(--paper-raised); padding: var(--space-3) var(--space-4) var(--space-4); clip-path: polygon(0 3%, 100% 0, 99% 100%, 1% 97%); }
+.wic-message-assistant { align-self: flex-start; padding-left: var(--space-4); border-left: 3px solid var(--ink); }
+.wic-message-failed { border-left-color: var(--red-ink); }
+.wic-message-body > :has(+ .wic-message-cursor) { display: inline; }
+.wic-message-cursor { display: inline-block; width: 10px; height: 20px; margin-left: 2px; vertical-align: -3px; background: var(--red); animation: wic-blink 1s steps(2) infinite; }
+@keyframes wic-blink { 50% { opacity: 0; } }
+.wic-message-end { display: inline-flex; gap: var(--space-1); margin: var(--space-2) 0 0; font-family: var(--font-gothic); font-weight: 700; font-size: 15px; line-height: 20px; color: var(--ink-muted); }
+.wic-message-failed .wic-message-end { color: var(--red-ink); }
+.wic-message-actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); margin-top: var(--space-2); }
+.wic-message-actions .wic-btn { height: 32px; font-size: 15px; }
+
+/* Composer: the reply box, its keys said in italics, the send button in red */
+.wic-composer { display: grid; gap: var(--space-2); padding: var(--space-4); border-top: 1px solid var(--line); background: var(--paper); }
+.wic-composer-actions { display: flex; align-items: center; justify-content: flex-end; gap: var(--space-3); }
+.wic-composer-hint { margin-right: auto; font-family: var(--font-serif); font-style: italic; font-size: 15px; line-height: 23px; color: var(--ink-muted); }
+
+/* ConversationList: a column of titles, the open one marked by an ochre cut strip */
+.wic-conversations ul { list-style: none; margin: 0; padding: 0; }
+.wic-conversation-link { position: relative; isolation: isolate; display: flex; align-items: center; justify-content: space-between; gap: var(--space-2); padding: var(--space-2) var(--space-3); color: var(--ink); text-decoration: none; font-family: var(--font-gothic); font-weight: 700; font-size: 15px; line-height: 20px; }
+.wic-conversation-title { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.wic-conversation-link:hover .wic-conversation-title { text-decoration: underline; text-decoration-thickness: 2px; }
+.wic-conversation-current .wic-conversation-link::before { content: ""; position: absolute; inset: 2px 0; z-index: -1; background: var(--ochre); clip-path: polygon(0 10%, 100% 0, 98% 100%, 1% 90%); }
+.wic-conversation-current .wic-conversation-link { color: var(--on-ochre); }
+
+/* BranchSwitcher: the version count typed between two small arrows */
+.wic-branches { display: inline-flex; align-items: center; gap: var(--space-1); font-family: var(--font-typewriter); font-size: 15px; line-height: 23px; }
+.wic-branches-step { min-width: 32px; height: 32px; padding: 0; border: 0; background: transparent; color: var(--ink); font-family: var(--font-gothic); font-weight: 700; font-size: 20px; cursor: pointer; }
+.wic-branches-step:disabled { color: var(--ink-muted); cursor: not-allowed; }
+
+/* ToolCall: a folded slip, the tool's name typewritten, its state in a word and a glyph */
+.wic-tool { max-width: 72ch; background: var(--paper-raised); border-left: 3px solid var(--line-strong); }
+.wic-tool-error { border-left-color: var(--red-ink); }
+.wic-tool-head { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-3); padding: var(--space-2) var(--space-3); cursor: pointer; }
+.wic-tool-name { font-family: var(--font-typewriter); font-size: 15px; line-height: 23px; }
+.wic-tool-state { display: inline-flex; gap: var(--space-1); font-family: var(--font-gothic); font-weight: 700; font-size: 15px; line-height: 20px; }
+.wic-tool-error .wic-tool-state { color: var(--red-ink); }
+.wic-tool-progress { font-family: var(--font-serif); font-style: italic; font-size: 15px; line-height: 23px; color: var(--ink-muted); }
+.wic-tool-body { padding: 0 var(--space-3) var(--space-3); font-family: var(--font-typewriter); font-size: 15px; line-height: 23px; overflow-x: auto; }
+.wic-tool-body pre { margin: 0 0 var(--space-2); white-space: pre-wrap; overflow-wrap: anywhere; }
+
+/* Question: a sheet handed to the reader, its label on a strip of ochre tape */
+.wic-question { position: relative; max-width: 72ch; background: var(--paper-raised); padding: var(--space-6) var(--space-6) var(--space-4); clip-path: polygon(0 1%, 100% 0, 99.5% 99%, 0.5% 100%); }
+.wic-question-label { display: inline-block; font-family: var(--font-gothic); font-weight: 700; font-size: 15px; line-height: 22px; background: var(--ochre); color: var(--on-ochre); padding: 1px var(--space-3); margin: 0 0 var(--space-3) calc(-1 * var(--space-6)); clip-path: polygon(0 0, 100% 10%, 97% 100%, 0 90%); }
+.wic-question-text { margin: 0 0 var(--space-4); font-family: var(--font-serif); font-size: 21px; line-height: 32px; }
+.wic-question-actions { display: flex; flex-wrap: wrap; gap: var(--space-3); }
+
+/* Skeleton: grey rules where text is about to be printed */
+.wic-skeleton { display: grid; gap: var(--space-3); padding: var(--space-2) 0; }
+.wic-skeleton-line { display: block; height: 14px; background: var(--line); clip-path: polygon(0 10%, 100% 0, 99% 100%, 0 90%); animation: wic-fade 1.4s ease-in-out infinite alternate; }
+.wic-skeleton-line:nth-child(3n) { width: 60%; }
+.wic-skeleton-line:nth-child(3n + 2) { width: 85%; }
+@keyframes wic-fade { from { opacity: 1; } to { opacity: .4; } }
+
 @media (max-width: 560px) {
   .wic-bar-2, .wic-bar-3 { display: none; }
   h2.wic-heading { font-size: 32px; line-height: 36px; }
 }
-@media (prefers-reduced-motion: reduce) { .wic-btn, .wic-source { transition: none; } .wic-btn:hover, .wic-source:hover { transform: none; } }
+@media (prefers-reduced-motion: reduce) {
+  .wic-btn, .wic-source { transition: none; }
+  .wic-btn:hover, .wic-source:hover { transform: none; }
+  .wic-message-cursor, .wic-skeleton-line, .wic-status-running > span[aria-hidden] { animation: none; }
+}

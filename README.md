@@ -66,7 +66,10 @@ The repository is a Bun workspace. `bun install` at the root installs it, `bun r
   - `tokens.css` is built from `tokens.json`. It sets every token as a CSS variable, loads the fonts, switches to the dark theme with the system setting or `data-theme="dark"` on the root element, and gives one class per text style.
   - `fonts/` holds the four families, each with its OFL-1.1 license.
   - `logos/` holds the WPT and WIC monograms: normal, reverse for dark grounds, and single red.
-- `packages/components` (`@workers-intelligence-commons/components`): React 19 components. `Button`, `ButtonLink`, `Badge`, `Slogan`, `Notice`, `SourceCard`, `Sheet`, `SectionHeading` and `Mark`, each with a guideline file beside its package manifest.
+- `packages/components` (`@workers-intelligence-commons/components`): React 19 components, each described in a guideline file beside the package manifest.
+  - For pages: `Button`, `ButtonLink`, `Badge`, `Slogan`, `Notice`, `SourceCard`, `Sheet`, `SectionHeading` and `Mark`.
+  - For forms: `TextInput`, `TextArea`, `Select` and `Checkbox`.
+  - For conversations with a model: `MessageList`, `Message`, `Composer`, `ConversationList`, `ConversationItem`, `BranchSwitcher`, `ToolCall`, `Question`, `Status` and `Skeleton`.
   - The package exports the components as ES modules with their types, and `styles.css` for their styles.
   - `global.js` is the same components for a page without a bundler: it reads React from `window.React` and sets `window.WIC`.
   - The `Mark` drawings are generated from `packages/tokens/logos` at build time.

@@ -2,9 +2,11 @@
 
 /* Button and ButtonLink: a sheet cut with scissors. The cut lives on ::before so the focus outline and the
    misprint shadow, which a clip-path would cut off, stay outside the shape. */
-.wic-btn { position: relative; isolation: isolate; display: inline-flex; align-items: center; justify-content: center; font-family: var(--font-gothic); font-weight: 700; font-size: 17px; line-height: 22px; height: 46px; padding: 0 var(--space-6); border: 0; background: transparent; color: var(--paper); text-decoration: none; cursor: pointer; transition: transform .12s; }
+.wic-btn { position: relative; isolation: isolate; display: inline-flex; align-items: center; justify-content: center; font-family: var(--font-gothic); font-weight: 700; font-size: 17px; line-height: 22px; height: 46px; padding: 0 var(--space-6); border: 0; background: transparent; color: var(--paper); text-decoration: none; cursor: pointer; transition: transform var(--motion-quick) var(--ease-paste); }
 .wic-btn::before { content: ""; position: absolute; inset: 0; z-index: -1; background: var(--ink); clip-path: polygon(1% 6%, 52% 0, 99% 4%, 100% 92%, 47% 100%, 0 96%); }
 .wic-btn:hover { transform: translateY(-2px); filter: var(--shadow-misprint-filter); }
+/* Pressed: the sheet goes back flat against the wall, under the finger. */
+.wic-btn:active:not(:disabled) { transform: translateY(1px); filter: none; transition-duration: 40ms; }
 .wic-btn-primary { color: var(--on-red); }
 .wic-btn-primary::before { background: var(--red); }
 .wic-btn-quiet { color: var(--ink); padding: 0 var(--space-2); }
@@ -44,7 +46,7 @@
 .wic-notice-body { margin: 0; font-family: var(--font-serif); font-size: 18px; line-height: 30px; }
 
 /* SourceCard: one sheet of the provenance ledger */
-.wic-source { position: relative; background: var(--paper-raised); max-width: 560px; padding-top: 10px; transition: transform .12s, box-shadow .12s; }
+.wic-source { position: relative; background: var(--paper-raised); max-width: 560px; padding-top: 10px; transition: transform var(--motion-quick) var(--ease-paste), box-shadow var(--motion-quick); }
 .wic-source::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 8px; background: var(--ink); clip-path: polygon(0 0, 100% 30%, 100% 100%, 0 70%); }
 .wic-source:hover { transform: translateY(-2px); box-shadow: var(--shadow-misprint); }
 .wic-source-head { display: flex; justify-content: space-between; align-items: center; gap: var(--space-3); padding: var(--space-4) var(--space-4) var(--space-2); }
@@ -84,6 +86,16 @@ h3.wic-heading { font-size: 24px; line-height: 30px; letter-spacing: 0; }
 .wic-check .wic-field-hint, .wic-check .wic-field-error { grid-column: 2; }
 .wic-check-box { width: 20px; height: 20px; margin: 1px 0 0; accent-color: var(--ink); }
 .wic-check-label { font-family: var(--font-serif); font-size: 18px; line-height: 22px; }
+/* Switch: a track cut square, its knob in ink; on, the track is ochre and the knob slides right. */
+.wic-switch { align-items: center; }
+.wic-switch .wic-check-label { font-family: var(--font-gothic); font-weight: 700; font-size: 17px; }
+/* What turning it on does is a sentence or more: set upright, not in the italic of short labels. */
+.wic-switch .wic-field-hint { font-style: normal; }
+.wic-switch-track { appearance: none; position: relative; width: 44px; height: 24px; margin: 0; border: 2px solid var(--ink); background: var(--paper-raised); cursor: pointer; transition: background var(--motion-quick) var(--ease-slide); }
+.wic-switch-track::before { content: ""; position: absolute; top: 2px; left: 2px; width: 16px; height: 16px; background: var(--ink); transition: transform var(--motion-paste) var(--ease-paste), background var(--motion-quick); }
+.wic-switch-track:checked { background: var(--ochre); }
+.wic-switch-track:checked::before { transform: translateX(20px); background: var(--on-ochre); }
+.wic-switch-track:disabled { cursor: not-allowed; opacity: 0.5; }
 
 /* Status: a word and its glyph, like Badge, for the state of a conversation rather than a source */
 .wic-status { display: inline-flex; align-items: center; gap: var(--space-1); font-family: var(--font-gothic); font-weight: 700; font-size: 15px; line-height: 20px; padding: 2px var(--space-2) 1px; clip-path: polygon(0 8%, 100% 0, 97% 100%, 3% 92%); white-space: nowrap; }
@@ -111,18 +123,34 @@ h3.wic-heading { font-size: 24px; line-height: 30px; letter-spacing: 0; }
 .wic-message-failed .wic-message-end { color: var(--red-ink); }
 .wic-message-actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); margin-top: var(--space-2); }
 .wic-message-actions .wic-btn { height: 32px; font-size: 15px; }
+/* Details: typed small at the end of the actions, shown when the message has the pointer or the focus. Screen readers read them always. */
+.wic-message:focus { outline: none; }
+.wic-message-details { margin-left: auto; font-family: var(--font-typewriter); font-size: 14px; line-height: 20px; color: var(--ink-muted); opacity: 0; transition: opacity var(--motion-paste) var(--ease-lift); }
+.wic-message:hover .wic-message-details, .wic-message:focus-within .wic-message-details { opacity: 1; transition-timing-function: var(--ease-slide); }
 
-/* Composer: the reply box, its keys said in italics, the send button in red */
-.wic-composer { display: grid; gap: var(--space-2); padding: var(--space-4); border-top: 1px solid var(--line); background: var(--paper); }
-.wic-composer-actions { display: flex; align-items: center; justify-content: flex-end; gap: var(--space-3); }
-.wic-composer-hint { margin-right: auto; font-family: var(--font-serif); font-style: italic; font-size: 15px; line-height: 23px; color: var(--ink-muted); }
+/* Composer: one box holding the text, the controls of the next message, its keys said in italics
+   and the send button in red. The text grows with what is written, up to a third of the window. */
+.wic-composer { display: grid; padding: var(--space-3) var(--space-4) var(--space-4); }
+.wic-composer-box { display: grid; gap: var(--space-1); padding: var(--space-2) var(--space-2) var(--space-2) var(--space-3); background: var(--paper-raised); border: 1px solid var(--line-strong); border-radius: var(--radius-1); }
+.wic-composer-box:has(.wic-composer-field:focus-visible) { outline: 3px solid var(--ink); outline-offset: 3px; }
+.wic-composer-field { width: 100%; min-height: 56px; max-height: 33dvh; padding: var(--space-1) 0; border: 0; outline: 0; background: transparent; color: var(--ink); font-family: var(--font-serif); font-size: 18px; line-height: 28px; resize: none; field-sizing: content; box-sizing: border-box; }
+.wic-composer-field::placeholder { color: var(--ink-muted); font-style: italic; }
+.wic-composer-actions { display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-start; gap: var(--space-2); }
+.wic-composer-box .wic-picker-button { border-color: transparent; }
+.wic-composer-box .wic-picker-button:hover, .wic-composer-box .wic-picker[data-open] .wic-picker-button { border-color: var(--line-strong); }
+/* The hint takes the room left between the controls and the buttons, on two lines when it must. */
+.wic-composer-hint { flex: 1 1 0; min-width: 12ch; font-family: var(--font-serif); font-style: italic; font-size: 15px; line-height: 20px; color: var(--ink-muted); }
+/* On a narrow screen the keys go under the controls, which keep one row with the send button. */
+@media (max-width: 560px) { .wic-composer-hint { order: 1; flex: 1 1 100%; margin-right: 0; font-size: 14px; } .wic-composer-hint + * { margin-left: auto; } }
 
 /* ConversationList: a column of titles, the open one marked by an ochre cut strip */
 .wic-conversations ul { list-style: none; margin: 0; padding: 0; }
 .wic-conversation-link { position: relative; isolation: isolate; display: flex; align-items: center; justify-content: space-between; gap: var(--space-2); padding: var(--space-2) var(--space-3); color: var(--ink); text-decoration: none; font-family: var(--font-gothic); font-weight: 700; font-size: 15px; line-height: 20px; }
 .wic-conversation-title { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .wic-conversation-link:hover .wic-conversation-title { text-decoration: underline; text-decoration-thickness: 2px; }
-.wic-conversation-current .wic-conversation-link::before { content: ""; position: absolute; inset: 2px 0; z-index: -1; background: var(--ochre); clip-path: polygon(0 10%, 100% 0, 98% 100%, 1% 90%); }
+.wic-conversation-current .wic-conversation-link::before { content: ""; position: absolute; inset: 2px 0; z-index: -1; background: var(--ochre); clip-path: polygon(0 10%, 100% 0, 98% 100%, 1% 90%); transform-origin: left; animation: wic-strip var(--motion-paste) var(--ease-paste); }
+/* The strip is laid down from the left, like tape pulled off the roll. */
+@keyframes wic-strip { from { transform: scaleX(0); } }
 .wic-conversation-current .wic-conversation-link { color: var(--on-ochre); }
 
 /* BranchSwitcher: the version count typed between two small arrows */
@@ -139,6 +167,10 @@ h3.wic-heading { font-size: 24px; line-height: 30px; letter-spacing: 0; }
 .wic-tool-error .wic-tool-state { color: var(--red-ink); }
 .wic-tool-progress { font-family: var(--font-serif); font-style: italic; font-size: 15px; line-height: 23px; color: var(--ink-muted); }
 .wic-tool-body { padding: 0 var(--space-3) var(--space-3); font-family: var(--font-typewriter); font-size: 15px; line-height: 23px; overflow-x: auto; }
+.wic-tool { interpolate-size: allow-keywords; }
+/* The slip unfolds instead of jumping open, where the browser can animate it. */
+.wic-tool::details-content { block-size: 0; overflow: clip; transition: block-size var(--motion-paste) var(--ease-slide), content-visibility var(--motion-paste) allow-discrete; }
+.wic-tool[open]::details-content { block-size: auto; }
 .wic-tool-body pre { margin: 0 0 var(--space-2); white-space: pre-wrap; overflow-wrap: anywhere; }
 
 /* Question: a sheet handed to the reader, its label on a strip of ochre tape */
@@ -154,12 +186,100 @@ h3.wic-heading { font-size: 24px; line-height: 30px; letter-spacing: 0; }
 .wic-skeleton-line:nth-child(3n + 2) { width: 85%; }
 @keyframes wic-fade { from { opacity: 1; } to { opacity: .4; } }
 
+/* Motion: things are pasted onto the page. A scrap arrives tilted by tilt-1 at most, overshoots a hair and
+   settles flat; it leaves quicker than it came, lifted off the wall. */
+/* Poster: a sheet pasted on the wall. Raised paper with a light grain, cut edges and a strip of
+   tape at each top corner; it is pasted in when it appears. The edges and the tape are drawn behind
+   and over the content, never clipping it. */
+.wic-poster { position: relative; isolation: isolate; animation: wic-paste var(--motion-sheet) var(--ease-paste) both; }
+.wic-poster::before { content: ""; position: absolute; inset: 0; z-index: -1; clip-path: polygon(0.4% 0.6%, 38% 0, 99.6% 0.3%, 100% 47%, 99.5% 99.6%, 61% 100%, 0.2% 99.3%, 0 52%);
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .11 0 0 0 0 .1 0 0 0 0 .09 0 0 0 .045 0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23g)'/%3E%3C/svg%3E"), var(--paper-raised); }
+.wic-poster::after { content: ""; position: absolute; top: -10px; left: -14px; right: -14px; height: 24px; z-index: 1; pointer-events: none; opacity: 0.88; background: var(--ochre);
+  /* Two strips cut askew, one per corner, joined by a line of no width along the top. */
+  clip-path: polygon(0 35%, 92px 8%, 94px 80%, 2px 100%, 0 35%, calc(100% - 94px) 12%, 100% 30%, calc(100% - 2px) 96%, calc(100% - 92px) 78%, calc(100% - 94px) 12%, 0 35%); }
+@media (max-width: 560px) { .wic-poster::after { display: none; } }
+
+@keyframes wic-paste { from { opacity: 0; transform: translateY(6px) rotate(var(--tilt-1)); } }
+.wic-enter { animation: wic-paste var(--motion-paste) var(--ease-paste) both; }
+
+/* Dialog: a sheet pasted over a screen of paper laid on the page. The browser's modal dialog keeps the
+   focus inside; the sheet arrives and leaves with the dialog's own display. */
+.wic-dialog { border: 0; padding: 0; background: transparent; color: var(--ink); overflow: visible; max-width: none; max-height: none;
+  opacity: 0; transform: translateY(-12px);
+  transition: opacity var(--motion-lift) var(--ease-lift), transform var(--motion-lift) var(--ease-lift), display var(--motion-lift) allow-discrete, overlay var(--motion-lift) allow-discrete; }
+.wic-dialog[open] { opacity: 1; transform: none; transition-duration: var(--motion-sheet); transition-timing-function: var(--ease-paste); }
+@starting-style { .wic-dialog[open] { opacity: 0; transform: translateY(16px) rotate(var(--tilt-1)); } }
+.wic-dialog::backdrop { background: transparent; transition: background var(--motion-lift) var(--ease-lift), display var(--motion-lift) allow-discrete, overlay var(--motion-lift) allow-discrete; }
+.wic-dialog[open]::backdrop { background: color-mix(in srgb, var(--paper) 72%, transparent); transition-duration: var(--motion-sheet); transition-timing-function: var(--ease-slide); }
+@starting-style { .wic-dialog[open]::backdrop { background: transparent; } }
+.wic-dialog-center { width: min(720px, calc(100vw - 2 * var(--space-4))); margin: var(--space-12) auto; }
+.wic-dialog-sheet { position: relative; display: flex; flex-direction: column; max-height: calc(100dvh - 2 * var(--space-12)); background: var(--paper-raised); padding-top: 8px; clip-path: polygon(0 0.6%, 100% 0, 99.6% 99.4%, 0.4% 100%); }
+.wic-dialog-sheet::before { content: ""; position: absolute; left: 0; top: 0; width: 100%; height: 8px; background: var(--ink); clip-path: polygon(0 0, 100% 30%, 100% 100%, 0 70%); }
+.wic-dialog-head { display: flex; align-items: center; gap: var(--space-3); padding: var(--space-4) var(--space-6) var(--space-2); }
+.wic-dialog-title { margin: 0 auto 0 0; font-family: var(--font-gothic); font-weight: 800; font-size: 24px; line-height: 30px; }
+.wic-dialog-body { flex: 1; min-height: 0; overflow-y: auto; padding: var(--space-2) var(--space-6) var(--space-6); }
+/* Side: the sheet the height of the page slides in from the left edge, without overshoot. */
+.wic-dialog-side { width: min(340px, 88vw); height: 100dvh; margin: 0; inset: 0 auto 0 0; transform: translateX(-100%); }
+.wic-dialog-side[open] { transform: none; transition-timing-function: var(--ease-slide); }
+@starting-style { .wic-dialog-side[open] { opacity: 1; transform: translateX(-100%); } }
+.wic-dialog-side .wic-dialog-sheet { height: 100%; max-height: none; clip-path: polygon(0 0, 100% 0, 99% 100%, 0 100%); }
+.wic-dialog-side .wic-dialog-head { padding: var(--space-4) var(--space-4) var(--space-2); }
+.wic-dialog-side .wic-dialog-body { display: flex; flex-direction: column; padding: var(--space-2) var(--space-3) var(--space-4); }
+
+/* Picker: a button with the choice typed on it, and a list pasted under or over it, filtered as one types. */
+.wic-picker { position: relative; display: inline-block; }
+.wic-picker-button { display: inline-flex; align-items: center; gap: var(--space-2); max-width: 100%; height: 36px; padding: 0 var(--space-6) 0 var(--space-3); border: 1px solid var(--line-strong); border-radius: var(--radius-1); color: var(--ink); cursor: pointer; font-family: var(--font-gothic); font-weight: 700; font-size: 15px; line-height: 20px;
+  background: linear-gradient(45deg, transparent 50%, var(--ink) 50%) no-repeat calc(100% - 15px) 50% / 5px 5px, linear-gradient(-45deg, transparent 50%, var(--ink) 50%) no-repeat calc(100% - 10px) 50% / 5px 5px, var(--paper-raised); }
+.wic-picker-button:disabled { color: var(--ink-muted); cursor: not-allowed; }
+.wic-picker-current { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.wic-picker-panel { position: absolute; left: 0; z-index: 10; display: grid; grid-template-rows: auto 1fr; gap: var(--space-2); width: max(100%, 320px); max-width: calc(100vw - 2 * var(--space-4)); max-height: min(420px, 60dvh); padding: var(--space-2); background: var(--paper-raised); border: 1px solid var(--line-strong); filter: var(--shadow-misprint-filter);
+  transition: opacity var(--motion-paste) var(--ease-paste), transform var(--motion-paste) var(--ease-paste), display var(--motion-paste) allow-discrete; }
+.wic-picker-below .wic-picker-panel { top: calc(100% + var(--space-1)); transform-origin: top left; }
+.wic-picker-above .wic-picker-panel { bottom: calc(100% + var(--space-1)); transform-origin: bottom left; }
+.wic-picker-panel[hidden] { display: none; opacity: 0; transform: translateY(-4px); transition-duration: var(--motion-lift); transition-timing-function: var(--ease-lift); }
+.wic-picker-above .wic-picker-panel[hidden] { transform: translateY(4px); }
+@starting-style { .wic-picker-panel:not([hidden]) { opacity: 0; transform: translateY(6px) rotate(var(--tilt-1)); } }
+.wic-picker-filter { min-height: 38px; padding: var(--space-1) var(--space-2); font-size: 16px; line-height: 24px; }
+.wic-picker-body { display: flex; min-height: 0; }
+.wic-picker-list { flex: 1; min-width: 0; min-height: 0; overflow-y: auto; }
+/* Without a filter the list alone fills the panel and holds the focus; the active option marks it. */
+.wic-picker-panel:not(:has(.wic-picker-filter)) { grid-template-rows: 1fr; }
+.wic-picker-list:focus { outline: none; }
+/* Split: the groups in a column beside the options of the one shown; the panel keeps its size while
+   the groups change, and becomes a row of groups above the options on a narrow screen. */
+.wic-picker-split { width: min(600px, calc(100vw - 2 * var(--space-4))); height: min(400px, 60dvh); }
+.wic-picker-rail { display: flex; flex-direction: column; gap: 2px; width: 190px; flex: none; overflow-y: auto; padding-right: var(--space-2); margin-right: var(--space-2); border-right: 1px solid var(--line); }
+.wic-picker-tab { position: relative; isolation: isolate; display: flex; align-items: center; gap: var(--space-2); padding: var(--space-1) var(--space-2); border: 0; background: none; color: var(--ink); text-align: left; cursor: pointer; font-family: var(--font-gothic); font-weight: 700; font-size: 14px; line-height: 22px; }
+.wic-picker-tab:hover .wic-picker-tab-name { text-decoration: underline; text-decoration-thickness: 2px; }
+.wic-picker-tab[aria-selected="true"] { color: var(--on-ochre); }
+.wic-picker-tab[aria-selected="true"]::before { content: ""; position: absolute; inset: 1px 0; z-index: -1; background: var(--ochre); clip-path: polygon(0 10%, 100% 0, 98% 100%, 1% 90%); transform-origin: left; animation: wic-strip var(--motion-paste) var(--ease-paste); }
+.wic-picker-tab[data-unmatched] { color: var(--ink-muted); }
+.wic-picker-tab-name { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.wic-picker-icon { display: inline-flex; flex: none; width: 18px; height: 18px; align-items: center; justify-content: center; }
+.wic-picker-icon > * { width: 100%; height: 100%; }
+.wic-picker-count { font-family: var(--font-serif); font-style: italic; font-weight: 400; color: var(--ink-muted); }
+.wic-picker-tab[aria-selected="true"] .wic-picker-count { color: var(--on-ochre); }
+.wic-picker-group { padding: var(--space-2) var(--space-2) var(--space-1); font-family: var(--font-serif); font-style: italic; font-size: 15px; line-height: 20px; color: var(--ink-muted); }
+.wic-picker-option { position: relative; isolation: isolate; display: grid; padding: var(--space-1) var(--space-2); cursor: pointer; }
+.wic-picker-label { font-family: var(--font-gothic); font-weight: 700; font-size: 15px; line-height: 22px; }
+.wic-picker-slug { font-family: var(--font-typewriter); font-size: 13px; line-height: 18px; color: var(--ink-muted); overflow-wrap: anywhere; }
+.wic-picker-option[aria-selected="true"] .wic-picker-slug { color: var(--on-ochre); }
+.wic-picker-active::before { content: ""; position: absolute; inset: 1px 0; z-index: -1; background: var(--line); clip-path: polygon(0 10%, 100% 0, 99% 100%, 1% 90%); }
+.wic-picker-option[aria-selected="true"] { color: var(--on-ochre); }
+.wic-picker-option[aria-selected="true"]::before { content: ""; position: absolute; inset: 1px 0; z-index: -1; background: var(--ochre); clip-path: polygon(0 10%, 100% 0, 98% 100%, 1% 90%); }
+@media (max-width: 560px) {
+  .wic-picker-split .wic-picker-body { flex-direction: column; }
+  .wic-picker-split .wic-picker-rail { flex-direction: row; width: auto; overflow-x: auto; overflow-y: hidden; padding: 0 0 var(--space-2); margin: 0 0 var(--space-2); border-right: 0; border-bottom: 1px solid var(--line); }
+  .wic-picker-split .wic-picker-tab { white-space: nowrap; }
+}
+.wic-picker-empty { margin: 0; padding: var(--space-2); font-family: var(--font-serif); font-style: italic; font-size: 15px; color: var(--ink-muted); }
+
 @media (max-width: 560px) {
   .wic-bar-2, .wic-bar-3 { display: none; }
   h2.wic-heading { font-size: 32px; line-height: 36px; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .wic-btn, .wic-source { transition: none; }
-  .wic-btn:hover, .wic-source:hover { transform: none; }
-  .wic-message-cursor, .wic-skeleton-line, .wic-status-running > span[aria-hidden] { animation: none; }
+  .wic-btn, .wic-source, .wic-dialog, .wic-dialog::backdrop, .wic-picker-panel, .wic-switch-track, .wic-switch-track::before, .wic-message-details, .wic-tool::details-content { transition: none; }
+  .wic-btn:hover, .wic-btn:active:not(:disabled), .wic-source:hover { transform: none; }
+  .wic-message-cursor, .wic-skeleton-line, .wic-status-running > span[aria-hidden], .wic-enter, .wic-poster, .wic-picker-tab::before, .wic-conversation-current .wic-conversation-link::before { animation: none; }
 }

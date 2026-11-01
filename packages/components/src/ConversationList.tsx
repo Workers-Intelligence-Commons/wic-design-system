@@ -13,6 +13,8 @@ export interface ConversationItemProps {
   title: string;
   current?: boolean | undefined;
   running?: boolean | undefined;
+  /** Arrives pasted: for a conversation added while the list is shown. */
+  entering?: boolean | undefined;
   href?: string | undefined;
   link?: ((props: ConversationLinkProps) => ReactNode) | undefined;
 }
@@ -25,9 +27,9 @@ export function ConversationList({ label = "Conversations", children }: Conversa
   );
 }
 
-export function ConversationItem({ title, current = false, running = false, href, link = (props) => <a href={href} {...props} /> }: ConversationItemProps) {
+export function ConversationItem({ title, current = false, running = false, entering = false, href, link = (props) => <a href={href} {...props} /> }: ConversationItemProps) {
   return (
-    <li className={cx("wic-conversation", current && "wic-conversation-current")}>
+    <li className={cx("wic-conversation", current && "wic-conversation-current", entering && "wic-enter")}>
       {link({
         className: "wic-conversation-link wic-focus",
         "aria-current": current ? "page" : undefined,

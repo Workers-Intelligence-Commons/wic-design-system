@@ -10,6 +10,6 @@ Licenses
   LICENSE.
 - Fonts in packages/tokens/fonts: OFL-1.1, each with its license file
   alongside.
-- WPT and WIC monograms in packages/tokens/logos, and their drawings in
+- WPT, WIC and hub monograms in packages/tokens/logos, and their drawings in
   the Mark component and in every build that contains it: not licensed,
   all rights reserved.

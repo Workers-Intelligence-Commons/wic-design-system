@@ -15,6 +15,7 @@ type Tokens = {
   radius: { tokens: Token[] };
   shadow: { tokens: Token[] };
   tilt: { tokens: Token[] };
+  motion: { tokens: Token[] };
 };
 
 const root = new URL("..", import.meta.url).pathname;
@@ -41,7 +42,7 @@ function vars(theme: "light" | "dark"): string[] {
   return out;
 }
 
-const fixed = [...t.spacing.tokens, ...t.radius.tokens, ...t.tilt.tokens].map((token) => `  --${token.name}: ${token.value};`);
+const fixed = [...t.spacing.tokens, ...t.radius.tokens, ...t.tilt.tokens, ...t.motion.tokens].map((token) => `  --${token.name}: ${token.value};`);
 const families = Object.entries(t.type.families).map(([name, stack]) => `  --font-${name}: ${stack};`);
 const dark = [...vars("dark"), "  color-scheme: dark;"];
 

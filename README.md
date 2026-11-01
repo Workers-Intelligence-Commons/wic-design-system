@@ -40,17 +40,26 @@ Workers' Intelligence Commons holds intelligence as a means of production, in co
 ## Focus and states
 
 - Keyboard focus: a solid 3px `ink` outline, 3px off the element, over 3:1 on every surface in both themes.
-- Hover: buttons and source cards lift by 2px and cast `shadow-misprint`. A quiet button only lifts: it has no sheet, and a shadow on bare letters would hurt reading. Disabled: `ink-muted`, struck through. Motion is skipped under `prefers-reduced-motion`.
+- Hover: buttons and source cards lift by 2px and cast `shadow-misprint`. A quiet button only lifts: it has no sheet, and a shadow on bare letters would hurt reading. Disabled: `ink-muted`, struck through.
+
+## Motion: pasted, then lifted
+
+- Things are pasted onto the page. A scrap arrives tilted by `tilt-1` at most, overshoots a hair along `ease-paste` and settles flat; text is never read mid-motion beyond that tilt.
+- A sheet leaves quicker than it came (`motion-lift`, `ease-lift`), lifted off the wall. A sheet entering from an edge slides along `ease-slide`, without overshoot.
+- Durations come from the `motion-` tokens: `motion-quick` for the hand on a button, `motion-paste` for a message, a row or a popover, `motion-sheet` for a dialog, the side drawer or a poster.
+- Only what appears while the reader watches moves: a message or a row already there when a view opens is shown still.
+- Motion is skipped under `prefers-reduced-motion`.
 
 ## Logos
 
-The two monograms share one construction, cut from paper: the W of the workers, in ink, runs its last stroke into the next letter, and the rest of the name is pasted in red. Each stroke is a separate scrap, with small notches where the pieces meet.
+The monograms share one construction, cut from paper: the W of the workers, in ink, runs its last stroke into the next letter, and the rest of the name is pasted in red. Each stroke is a separate scrap, with small notches where the pieces meet.
 
 - `wpt-mark.svg`: WPT. The W rises into the stem of the P; the P's top runs on as the bar of the T.
 - `wic-mark.svg`: Workers' Intelligence Commons. The W rises into the I, then the C.
+- `hub-mark.svg`: the WIC hub, the commons' chat application. The W rises into the first stem of the H.
 - `-reverse` files are for dark grounds (paper W, light red); `-red` files are single-ink, for one-colour printing.
 - Keep clear space of half the mark's height; minimum 24px tall; never redraw or straighten the pieces.
-- On screen, the `Mark` component draws both monograms from these files in the inks of the current theme.
+- On screen, the `Mark` component draws every monogram from these files in the inks of the current theme.
 
 ## Iconography
 
@@ -62,13 +71,13 @@ The two monograms share one construction, cut from paper: the W of the workers, 
 The repository is a Bun workspace. `bun install` at the root installs it, `bun run build` builds every package into its `dist/`, and `bun run test` checks the components.
 
 - `packages/tokens` (`@workers-intelligence-commons/tokens`): the tokens and the brand files.
-  - `tokens.json` holds every token: colours in both themes, spacing, radius, tilt, shadow, fonts and text styles, each with its usage.
+  - `tokens.json` holds every token: colours in both themes, spacing, radius, tilt, shadow, motion, fonts and text styles, each with its usage.
   - `tokens.css` is built from `tokens.json`. It sets every token as a CSS variable, loads the fonts, switches to the dark theme with the system setting or `data-theme="dark"` on the root element, and gives one class per text style.
   - `fonts/` holds the four families, each with its OFL-1.1 license.
-  - `logos/` holds the WPT and WIC monograms: normal, reverse for dark grounds, and single red.
+  - `logos/` holds the WPT, WIC and hub monograms: normal, reverse for dark grounds, and single red.
 - `packages/components` (`@workers-intelligence-commons/components`): React 19 components, each described in a guideline file beside the package manifest.
-  - For pages: `Button`, `ButtonLink`, `Badge`, `Slogan`, `Notice`, `SourceCard`, `Sheet`, `SectionHeading` and `Mark`.
-  - For forms: `TextInput`, `TextArea`, `Select` and `Checkbox`, and for credentials `AccountField`, `CurrentPasswordField`, `NewPasswordField` and `SecretField`.
+  - For pages: `Button`, `ButtonLink`, `Badge`, `Slogan`, `Notice`, `SourceCard`, `Sheet`, `Poster`, `Dialog`, `SectionHeading` and `Mark`.
+  - For forms: `TextInput`, `TextArea`, `Select`, `Picker`, `Checkbox` and `Switch`, and for credentials `AccountField`, `CurrentPasswordField`, `NewPasswordField` and `SecretField`.
   - For conversations with a model: `MessageList`, `Message`, `Composer`, `ConversationList`, `ConversationItem`, `BranchSwitcher`, `ToolCall`, `Question`, `Status` and `Skeleton`.
   - The package exports the components as ES modules with their types, and `styles.css` for their styles.
   - `global.js` is the same components for a page without a bundler: it reads React from `window.React` and sets `window.WIC`.

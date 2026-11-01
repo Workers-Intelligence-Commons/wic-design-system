@@ -1,6 +1,6 @@
 import { describe, expect, test } from "bun:test";
 import { renderToStaticMarkup } from "react-dom/server";
-import { AccountField, Badge, BranchSwitcher, ButtonLink, Checkbox, CurrentPasswordField, NewPasswordField, SecretField, ConversationItem, Mark, Message, Notice, Question, SectionHeading, Slogan, SourceCard, Status, TextInput, ToolCall } from "./index.ts";
+import { AccountField, Badge, BranchSwitcher, ButtonLink, Checkbox, CurrentPasswordField, Dialog, groupOptions, NewPasswordField, SecretField, ConversationItem, Mark, Message, Notice, Question, SectionHeading, Slogan, SourceCard, Status, TextInput, ToolCall } from "./index.ts";
 
 const html = (node: React.ReactNode) => renderToStaticMarkup(node);
 
@@ -175,5 +175,67 @@ describe("credential fields", () => {
       "data-bwignore": "",
       "data-form-type": "other",
     });
+  });
+});
+
+describe("Picker", () => {
+  const options = [
+    { value: "a", label: "Claude Sonnet", group: "Anthropic" },
+    { value: "o", label: "GPT-5", group: "OpenAI" },
+    { value: "h", label: "Claude Haiku", group: "Anthropic" },
+    { value: "w", label: "wpt" },
+  ];
+
+  test("lists the options by group, each group where its first option came", () => {
+    expect(groupOptions(options, "").map((g) => [g.name, g.options.map((o) => o.value)])).toEqual([
+      ["Anthropic", ["a", "h"]],
+      ["OpenAI", ["o"]],
+      [undefined, ["w"]],
+    ]);
+  });
+
+  test("keeps the options whose name or group holds every word typed, in any case", () => {
+    expect(groupOptions(options, "anthropic haiku").flatMap((g) => g.options.map((o) => o.value))).toEqual(["h"]);
+    expect(groupOptions(options, "CLAUDE").flatMap((g) => g.options.map((o) => o.value))).toEqual(["a", "h"]);
+    expect(groupOptions(options, "mistral")).toEqual([]);
+  });
+
+  // A slug names the group before its slash: typing it narrows the list to that group, and the
+  // words after the slash pick among its models.
+  test("narrows to a group by the start of its slug, then by the words after the slash", () => {
+    const slugged = [
+      { value: "a", label: "Claude Sonnet", group: "Anthropic", slug: "anthropic/claude-sonnet" },
+      { value: "h", label: "Claude Haiku", group: "Anthropic", slug: "anthropic/claude-haiku" },
+      { value: "c", label: "Claude Sonnet", group: "Amazon Bedrock", slug: "amazon-bedrock/claude-sonnet" },
+      { value: "o", label: "GPT-5", group: "OpenAI", slug: "openai/gpt-5" },
+    ];
+    const values = (filter: string) => groupOptions(slugged, filter).flatMap((g) => g.options.map((o) => o.value));
+    expect(values("anthropic/")).toEqual(["a", "h"]);
+    expect(values("an/sonnet")).toEqual(["a"]);
+    expect(values("amazon/")).toEqual(["c"]);
+    expect(values("sonnet")).toEqual(["a", "c"]);
+  });
+});
+
+describe("Message details", () => {
+  test("stay in the page beside the actions, so a screen reader reads them while they are hidden", () => {
+    const out = html(
+      <Message from="assistant" details="wpt · 52 tokens/s">
+        <p>Hello</p>
+      </Message>,
+    );
+    expect(out).toContain('<div class="wic-message-actions"><span class="wic-message-details">wpt · 52 tokens/s</span></div>');
+  });
+});
+
+describe("Dialog", () => {
+  test("is named by its title", () => {
+    const out = html(
+      <Dialog open={false} onClose={() => {}} title="Settings">
+        <p>Body</p>
+      </Dialog>,
+    );
+    const id = /aria-labelledby="([^"]+)"/.exec(out)?.[1];
+    expect(out).toContain(`<h2 id="${id}" class="wic-dialog-title">Settings</h2>`);
   });
 });

@@ -89,6 +89,25 @@ export function Checkbox({ label, hint, error, className, ...rest }: CheckboxPro
   );
 }
 
+export type SwitchProps = CheckboxProps;
+
+/**
+ * A setting that is on or off and takes effect at once, without a form to submit: a checkbox
+ * announced as a switch. The hint says what turning it on does.
+ */
+export function Switch({ label, hint, error, className, ...rest }: SwitchProps) {
+  const { id, control } = useField({ hint, error }, rest.id);
+  return (
+    <div className={cx("wic-field", "wic-check", "wic-switch", className)}>
+      <input type="checkbox" role="switch" {...rest} {...control} className="wic-switch-track wic-focus" />
+      <label htmlFor={id} className="wic-check-label">
+        {label}
+      </label>
+      <Notes id={id} hint={hint} error={error} />
+    </div>
+  );
+}
+
 /** `name` is the key of the value in a submitted form: the consumer may replace the default. */
 type CredentialProps = FieldProps & Omit<ComponentProps<"input">, "type" | "autoComplete">;
 

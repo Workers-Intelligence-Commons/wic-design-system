@@ -1,7 +1,7 @@
 import { MARKS } from "./marks.generated.ts";
 
 export interface MarkProps {
-  name: "wpt" | "wic";
+  name: "wpt" | "wic" | "hub";
   tone?: "two-ink" | "red";
   height?: number;
   label?: string;

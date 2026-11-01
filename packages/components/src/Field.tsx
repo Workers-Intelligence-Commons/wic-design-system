@@ -88,3 +88,44 @@ export function Checkbox({ label, hint, error, className, ...rest }: CheckboxPro
     </div>
   );
 }
+
+/** `name` is the key of the value in a submitted form: the consumer may replace the default. */
+type CredentialProps = FieldProps & Omit<ComponentProps<"input">, "type" | "autoComplete">;
+
+export type AccountFieldProps = CredentialProps & {
+  type?: "email" | "text";
+  /** The person types the identifier of an account they are creating, not of one they have. */
+  creating?: boolean;
+};
+export type CurrentPasswordFieldProps = CredentialProps;
+export type NewPasswordFieldProps = CredentialProps;
+export type SecretFieldProps = FieldProps & Omit<ComponentProps<"input">, "type" | "autoComplete">;
+
+/**
+ * The identifier of the person's own account, which a password manager stores as the username. An
+ * email address for a new account asks for an email, so that the manager offers the person's
+ * addresses rather than a username.
+ */
+export function AccountField({ type = "email", creating = false, name = "username", ...rest }: AccountFieldProps) {
+  const autoComplete = creating && type === "email" ? "email" : "username";
+  return <TextInput autoCapitalize="none" spellCheck={false} {...rest} type={type} name={name} autoComplete={autoComplete} />;
+}
+
+/** The person's current password, which a password manager fills. */
+export function CurrentPasswordField({ name = "current-password", ...rest }: CurrentPasswordFieldProps) {
+  return <TextInput {...rest} type="password" name={name} autoComplete="current-password" />;
+}
+
+/** A password the person chooses; its length limits also reach the managers that generate one. */
+export function NewPasswordField({ minLength, maxLength, name = "new-password", ...rest }: NewPasswordFieldProps) {
+  const rules = [minLength !== undefined && `minlength: ${minLength};`, maxLength !== undefined && `maxlength: ${maxLength};`].filter(Boolean).join(" ");
+  return <TextInput {...rest} {...(rules ? { passwordrules: rules } : {})} minLength={minLength} maxLength={maxLength} type="password" name={name} autoComplete="new-password" />;
+}
+
+/** The opt-out attribute of each common password manager: 1Password, LastPass, Bitwarden and Dashlane. */
+const MANAGERS_IGNORE = { "data-1p-ignore": "", "data-lpignore": "true", "data-bwignore": "", "data-form-type": "other" };
+
+/** A secret that is not the person's own password, such as a token: password managers neither fill nor save it. */
+export function SecretField(props: SecretFieldProps) {
+  return <TextInput {...props} {...MANAGERS_IGNORE} type="password" autoComplete="off" />;
+}

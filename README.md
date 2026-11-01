@@ -68,7 +68,7 @@ The repository is a Bun workspace. `bun install` at the root installs it, `bun r
   - `logos/` holds the WPT and WIC monograms: normal, reverse for dark grounds, and single red.
 - `packages/components` (`@workers-intelligence-commons/components`): React 19 components, each described in a guideline file beside the package manifest.
   - For pages: `Button`, `ButtonLink`, `Badge`, `Slogan`, `Notice`, `SourceCard`, `Sheet`, `SectionHeading` and `Mark`.
-  - For forms: `TextInput`, `TextArea`, `Select` and `Checkbox`.
+  - For forms: `TextInput`, `TextArea`, `Select` and `Checkbox`, and for credentials `AccountField`, `CurrentPasswordField`, `NewPasswordField` and `SecretField`.
   - For conversations with a model: `MessageList`, `Message`, `Composer`, `ConversationList`, `ConversationItem`, `BranchSwitcher`, `ToolCall`, `Question`, `Status` and `Skeleton`.
   - The package exports the components as ES modules with their types, and `styles.css` for their styles.
   - `global.js` is the same components for a page without a bundler: it reads React from `window.React` and sets `window.WIC`.

@@ -1,6 +1,6 @@
 import { describe, expect, test } from "bun:test";
 import { renderToStaticMarkup } from "react-dom/server";
-import { Badge, BranchSwitcher, ButtonLink, Checkbox, ConversationItem, Mark, Message, Notice, Question, SectionHeading, Slogan, SourceCard, Status, TextInput, ToolCall } from "./index.ts";
+import { AccountField, Badge, BranchSwitcher, ButtonLink, Checkbox, CurrentPasswordField, NewPasswordField, SecretField, ConversationItem, Mark, Message, Notice, Question, SectionHeading, Slogan, SourceCard, Status, TextInput, ToolCall } from "./index.ts";
 
 const html = (node: React.ReactNode) => renderToStaticMarkup(node);
 
@@ -141,5 +141,39 @@ describe("Question", () => {
   test("is a form only when it collects an answer", () => {
     expect(html(<Question question="Allow this tool?" />)).toMatch(/^<section class="wic-question">/);
     expect(html(<Question question="Your name?" onSubmit={() => {}} />)).toMatch(/^<form class="wic-question">/);
+  });
+});
+
+/** Attributes of the one input in the markup, by name. */
+const inputOf = (node: React.ReactNode) => Object.fromEntries([...(html(node).match(/<input [^>]*>/)?.[0] ?? "").matchAll(/([\w-]+)="([^"]*)"/g)].map((m) => [m[1], m[2]]));
+
+describe("credential fields", () => {
+  // Password managers tell a sign-in from a sign-up, and a login from a token, only by these attributes.
+  test("mark the account, the current and the new password for password managers", () => {
+    expect(inputOf(<AccountField label="Email address" />)).toMatchObject({ type: "email", name: "username", autoComplete: "username" });
+    expect(inputOf(<AccountField label="Email address" creating />)).toMatchObject({ type: "email", name: "username", autoComplete: "email" });
+    expect(inputOf(<AccountField label="Username" type="text" creating />)).toMatchObject({ type: "text", autoComplete: "username" });
+    expect(inputOf(<CurrentPasswordField label="Password" />)).toMatchObject({ type: "password", name: "current-password", autoComplete: "current-password" });
+    expect(inputOf(<CurrentPasswordField label="Password" name="password" />)).toMatchObject({ name: "password", autoComplete: "current-password" });
+    expect(inputOf(<NewPasswordField label="Password" minLength={8} maxLength={128} />)).toMatchObject({
+      type: "password",
+      name: "new-password",
+      autoComplete: "new-password",
+      minLength: "8",
+      maxLength: "128",
+      passwordrules: "minlength: 8; maxlength: 128;",
+    });
+  });
+
+  test("keeps a token out of password managers", () => {
+    expect(inputOf(<SecretField label="Token" name="token" />)).toMatchObject({
+      type: "password",
+      name: "token",
+      autoComplete: "off",
+      "data-1p-ignore": "",
+      "data-lpignore": "true",
+      "data-bwignore": "",
+      "data-form-type": "other",
+    });
   });
 });
